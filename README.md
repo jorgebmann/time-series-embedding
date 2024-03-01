@@ -1,4 +1,4 @@
-#Time Series Embedding Techniques
+# Time Series Embedding Techniques
 The code repository for the different time series embedding techniques
 
 ![churn](https://www.tensorflow.org/static/tutorials/structured_data/time_series_files/output_Vg5XIc5tfNlG_0.png)
