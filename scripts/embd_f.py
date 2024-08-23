@@ -504,3 +504,119 @@ def TDA_embedding(x_train, x_val, x_test):
     return train_tda2, val_tda2, test_tda2
 
 
+
+
+lstm_encoder_model = keras.Sequential(
+    [
+        keras.Input(shape=input_shape),
+        layers.LSTM(128, return_sequences=True, activation='tanh'),
+        layers.Dropout(0.2),  # Add dropout after the first LSTM layer
+        layers.LSTM(128, return_sequences=True, activation='tanh'),  # Retain sequences
+        layers.Dropout(0.5),
+        layers.GlobalMaxPooling1D(),  # Use GlobalMaxPooling1D instead of Flatten
+        layers.Dense(width, activation='relu')  # Adjust the width as necessary
+    ],
+    name="encoder_model",
+)
+
+
+
+cnn_encoder_model = keras.Sequential(
+		[
+			keras.Input(shape=input_shape),
+			layers.Conv1D(filters=100, kernel_size=10, activation='relu'),
+			layers.Conv1D(filters=100, kernel_size=10, activation='relu'),
+			layers.Dropout(0.5),
+			layers.MaxPooling1D(pool_size=2),
+			layers.Flatten(),
+			layers.Dense(width, activation='relu')
+   		],
+        name="encoder_model",
+    )
+
+def nnclr_get_feature_vectors(model, dataset):
+
+  feature_vectors = model.encoder(dataset, training=False)
+  np_data=feature_vectors.numpy()
+  feature_vectors_df = pd.DataFrame(np_data)
+  return feature_vectors_df
+
+def NNCLR_embedding(x_train_df,y_train_df, x_val_df,y_val_df,x_test_df,y_test_df, encoder_model,n_classes):
+    # Constants
+    BATCH_SIZE = 32
+    SHUFFLE_BUFFER_SIZE = 1000
+    AUTOTUNE = tf.data.AUTOTUNE
+    temperature = 0.1        # the temperature for the softmax function in the contrastive loss
+    queue_size = 5000        # the size of the queue for storing the feature vectors of the neighbors
+    
+    width = 64                  # the size of the output embedding vector for each sequence
+    pretrain_num_epochs = 100   # the number of epochs to pretrain the model
+    finetune_num_epochs = 100    # The number of epochs to fine-tune the model.
+    input_shape = train_df[0].shape
+    model = NNCLR(temperature=temperature, queue_size=queue_size, input_shape=input_shape, output_width=width, n_classes= n_classes, encoder=encoder_model)
+    model.compile(
+        contrastive_optimizer=keras.optimizers.Adam(),
+        probe_optimizer=keras.optimizers.Adam(),
+        run_eagerly=None # True = run eagerly, False = run as graph, None = autodetect
+    )
+    
+    model.build(input_shape=(None, input_shape[0], input_shape[1]))
+    print("The model summary")
+    model.summary()
+
+    # Define constants
+    SHUFFLE_BUFFER_SIZE = 10000
+    BATCH_SIZE = 32
+    AUTOTUNE = tf.data.AUTOTUNE
+    
+    # Create tf.data.Dataset objects
+    unlabeled_train_dataset = tf.data.Dataset.from_tensor_slices((x_train_df, y_train_df))
+    unlabeled_train_dataset = unlabeled_train_dataset.shuffle(SHUFFLE_BUFFER_SIZE).batch(BATCH_SIZE)
+    unlabeled_train_dataset = unlabeled_train_dataset.prefetch(AUTOTUNE)
+    
+    labeled_train_dataset = tf.data.Dataset.from_tensor_slices((x_val_df, y_val_df))
+    labeled_train_dataset = labeled_train_dataset.batch(BATCH_SIZE)
+    labeled_train_dataset = labeled_train_dataset.prefetch(AUTOTUNE)
+    
+    test_dataset = tf.data.Dataset.from_tensor_slices((x_test_df, y_test_df))
+    test_dataset = test_dataset.batch(BATCH_SIZE)
+    test_dataset = test_dataset.prefetch(AUTOTUNE)
+    
+    train_dataset = tf.data.Dataset.zip(
+        (unlabeled_train_dataset, labeled_train_dataset)
+    ).prefetch(buffer_size=AUTOTUNE)
+    pretrain_history = model.fit(
+    train_dataset, epochs=pretrain_num_epochs, validation_data=test_dataset,
+    verbose=2 # 0 = silent, 1 = progress bar, 2 = one line per epoch, 3 = one line per batch
+              # Due to a weird bug, the fit function crashes if verbose is set to 1.
+    )
+
+    print("now for finetuning the model:")
+    finetuning_model = keras.Sequential(
+    [
+        layers.Input(shape=input_shape),
+        augmenter("classification_augmenter", input_shape=input_shape),
+        model.encoder,
+        layers.Dense(n_classes),
+    ],
+    name="finetuning_model",
+    )
+    finetuning_model.compile(
+        optimizer=keras.optimizers.Adam(),
+        loss=keras.losses.SparseCategoricalCrossentropy(from_logits=True),
+        metrics=[keras.metrics.SparseCategoricalAccuracy(name="acc")],
+        run_eagerly=None # True = run eagerly, False = run as graph, None = autodetect
+    )
+    
+    finetuning_history = finetuning_model.fit(
+        labeled_train_dataset, epochs=finetune_num_epochs, validation_data=test_dataset
+    )
+    labeled_feature_vectors = model.encoder(x_val_df, training=False)
+    test_feature_vectors = model.encoder(x_test_df, training=False)
+    train_feature_vectors = model.encoder(x_train_df, training=False)
+
+    train_emb=get_feature_vectors(model, x_train_df)
+    test_emb=get_feature_vectors(model, x_test_df)
+    val_emb=get_feature_vectors(model, x_val_df)
+
+    return train_emb, val_emb, test_emb
