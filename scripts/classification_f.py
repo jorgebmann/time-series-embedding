@@ -218,7 +218,6 @@ def optimize_XGBOOST(x_train, x_val, x_test, y_train, y_val, y_test):
         model.fit(x_train, y_train)
         y_pred = model.predict(x_val)
         score = accuracy_score(y_val, y_pred)
-        # Early stopping condition
         return score
 
 
