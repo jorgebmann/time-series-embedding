@@ -43,6 +43,13 @@ To create the Conda Environment, please make sure to install the following libra
 - `networkx`
 - `ts2vg`
 - `gudhi`
+- 'POT'
+- 'PyWavelet'
+- 'tabulate'
+- 'xgboost'
+- 'fastdtw'
+- 'giotto-tda'
+
 
 ### Conda Virtual Environment
 
