@@ -1,89 +1,71 @@
+# A Comprehensive Evaluation of Time Series Embedding Methods for Classification Tasks
 
+This repository implements various time series embedding methods and provides a framework for quantitative evaluation of these methods on classification tasks. It allows researchers to compare different embedding techniques based on their theoretical foundations and empirical performance.
 
-
-<div align="center">
-
-
-<!-- TITLE -->
-# `A Comprehensive Evaluation of Time Series Embedding Methods for Classification Tasks`
-
-This Repository features the source code for the paper with the same title. For access to the papers, please follow the following links:
-
-// [![arXiv](https://img.shields.io/badge/cs.LG-arXiv:1234.56789-b31b1b.svg)](https://arxiv.org/abs/1234.56789)
-
-
-</div>
-
-
-<!-- DESCRIPTION -->
 ## Description
-This repository contains code for the quantitative evaluation of different time series embedding methods based on their theoretical foundations and application contexts.
-Unlike previous work, this study quantitatively compares these methods by testing their performance on various classification tasks across different datasets. 
-The results reveal that embedding methods perform differently depending on the dataset and classification algorithm, emphasizing the need for careful model selection and experimentation. 
-If you plan on using this repository, please cite the relevant paper as:
+This repository contains code for the quantitative evaluation of different time series embedding methods based on their theoretical foundations and application contexts. Unlike previous work, this study quantitatively compares these methods by testing their performance on various classification tasks across different datasets. The results reveal that embedding methods perform differently depending on the dataset and classification algorithm, emphasizing the need for careful model selection and experimentation. 
 
 
+## Repository Structure
 
-## Setup
-
-
-To create the Conda Environment, please make sure to install the following libraries:
-- `pandas`
-- `numpy`
-- `matplotlib`
-- `optuna`
-- `scikit-learn`
-- `pywt`
-- `scipy`
-- `fastdtw`
-- `tensorflow`
-- `kerashypetune`
-- `gtda`
-- `umap-learn`
-- `networkx`
-- `ts2vg`
-- `gudhi`
-- 'POT'
-- 'PyWavelet'
-- 'tabulate'
-- 'xgboost'
-- 'fastdtw'
-- 'giotto-tda'
+- `/data`: Scripts for downloading and processing datasets
+- `/results`: Results from experiments
+- `/utils`: Utility functions for data augmentation and visualization
+- `/notebooks`: Jupyter notebooks for experiments
+- `/scripts`: Implementation scripts
 
 
-### Conda Virtual Environment
+## Dependencies
 
-Create the Conda virtual environment using the [environment file](environment.yml):
+The main dependencies for this project are:
+- Python 3.7+
+- NumPy
+- Pandas
+- PyTorch
+- Scikit-learn
+- UMAP
+- Matplotlib
+- Seaborn
+
+All dependencies are specified in the `environment.yml` file.
+
+
+## Installation
+
+### Prerequisites
+
+Ensure you have [Conda](https://docs.conda.io/en/latest/) installed on your system.
+
+### Setting up the environment
+
 ```bash
-conda env create -f environment.yml
+# Clone the repository
+git clone https://github.com/imics-lab/time-series-embedding.git
+cd time-series-embedding
 
-# dynamically set python path for the environment
-conda activate YOUR_PROJECT
+# Create and activate the Conda environment
+conda env create -f environment.yml
+# Dynamically set Python path for the environment
+conda activate time-series-embedding
 conda env config vars set PYTHONPATH=$(pwd):$(pwd)/src
 ```
 
 
-<!-- USAGE -->
-## Usage
-To use this code, the preprocessing of the data first needs to take place. Then, you can simply apply different combinations of the embedding methods in this repository and classification methods.
-An Example of the code has been also been provided. 
+## Dataset Compatibility
 
-<!-- CONTRIBUTING -->
+The framework is designed to work with multiple time series datasets, including:
+- Human Activity Recognition (HAR)
+- ECG/EEG signal classification
+- Industrial sensor data
+- Environmental monitoring time series
+
+
+## Examples
+The repository includes two example notebooks:
+
+- ts_embed_example1.ipynb: Demonstrates basic time series embedding techniques
+- ts_embed_example2.ipynb: Shows more advanced embedding methods and their evaluation
+
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-Please make sure to update tests as appropriate.
-
-
-<!-- CITATION -->
-## Citation
-
-To cite this work, please use the following:
-
-
-```bibtex
-@article{YourName,
-  title={Your Title},
-  author={Your team},
-  year={Year}
-}
-```
