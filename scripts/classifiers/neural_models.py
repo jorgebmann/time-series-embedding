@@ -1,3 +1,11 @@
+"""
+Neural network and probabilistic classifiers for time series classification.
+
+This module contains implementations of neural network based and probabilistic
+classification algorithms optimized for time series classification tasks,
+including hyperparameter optimization via Optuna.
+"""
+
 import time
 from datetime import datetime
 import numpy as np
@@ -5,6 +13,8 @@ from sklearn.metrics import accuracy_score, classification_report
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.neural_network import MLPClassifier
 import optuna
+from sklearn.naive_bayes import GaussianNB
+
 
 def optimize_MLP(x_train, x_val, x_test, y_train, y_val, y_test,namee):
     # One-hot encode the target labels
@@ -61,12 +71,7 @@ def optimize_MLP(x_train, x_val, x_test, y_train, y_val, y_test,namee):
 
     return best_params, test_score
 
-import optuna
-import numpy as np
-from sklearn.naive_bayes import GaussianNB
-from sklearn.metrics import accuracy_score
-from datetime import datetime
-import time
+
 def optimize_NB(x_train, x_val, x_test, y_train, y_val, y_test,namee):
 
     def objective_NB(trial):

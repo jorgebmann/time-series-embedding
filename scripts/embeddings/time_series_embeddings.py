@@ -1,3 +1,10 @@
+"""
+Time Series Embedding Methods for Classification Tasks.
+
+This module provides implementations of various embedding techniques for time series data,
+organized according to the taxonomy presented in our paper.
+"""
+
 import pandas as pd
 import numpy as np
 import os
@@ -305,15 +312,6 @@ def graph_embedding(train_sc,valid_sc,test_sc):
     test_gr=create_vg(test_sc)
     return train_gr, val_gr, test_gr
 
-
-#now for the TDA
-
-
-import gudhi
-import numpy as np
-from gudhi.wasserstein import wasserstein_distance
-from gudhi.bottleneck import bottleneck_distance
-from gudhi.representations import Landscape
 
 # Example time series data (replace with your actual data)
 #time_series = np.array(x_train.iloc[0])

@@ -1,6 +1,10 @@
+"""
+Traditional machine learning algorithms for time series classification.
 
-#work of Yasamin Ghahremani
-#importing relative libraries
+This module contains implementations of traditional machine learning
+algorithms optimized for time series classification tasks, including
+hyperparameter optimization via Optuna.
+"""
 
 import pandas as pd
 import numpy as np
@@ -8,7 +12,6 @@ import time
 import optuna
 import torch
 from datetime import datetime
-
 
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, confusion_matrix,classification_report
@@ -242,12 +245,6 @@ def optimize_XGBOOST(x_train, x_val, x_test, y_train, y_val, y_test,namee):
     return best_params, test_score
 
 
-
-import optuna
-import time
-from datetime import datetime
-from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, classification_report
 
 def optimize_SVM(x_train, x_val, x_test, y_train, y_val, y_test, namee):
     def objective_SVM(trial):
