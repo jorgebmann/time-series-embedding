@@ -30,7 +30,7 @@ from tensorflow.keras.models import *
 from tensorflow.keras.callbacks import *
 from tensorflow.keras.optimizers import *
 from tensorflow.keras import backend as K
-from kerashypetune import KerasGridSearch
+import keras_tuner as kt
 import numpy as np
 from tensorflow.keras.layers import Input, Layer
 from tensorflow.keras.models import Model
