@@ -25,6 +25,29 @@ This repository contains code for the quantitative evaluation of different time 
 - Domain-specific patterns: Wavelet excels for biomechanical signals (77.7% accuracy)
 - Computational efficiency: Classical methods offer excellent performance-to-cost ratios
 
+**⚙️ Computational Efficiency on ElectricDevices dataset**
+
+| Method | Training Time | Inference Time | Memory | GPU Benefit |
+|--------|---------------|----------------|---------|-------------|
+| PCA | 0.443s | 0.064s | Low | Low |
+| Wavelet | 0.010s | 0.005s | Low | Moderate |
+| FFT | 0.103s | 0.090s | Low | High |
+| LLE | 23.377s | 1.604s | Moderate | Low |
+| UMAP | 21.719s | 15.000s | Moderate | Low |
+| Graph | 364.340s | 309.867s | High | Low |
+| TDA | 204.619s | 176.771s | High | Low |
+| Autoencoder | 38.609s | 1.181s | Moderate | High |
+| C-CNN | 680.504s | 0.139s | High | Very High |
+| C-RNN | 703.063s | 0.150s | High | High |
+| C-Transformer | 579.639s | 0.157s | High | Very High |
+
+**Key Insights:**
+- **Fastest training**: Wavelet Transform (0.010s) and FFT (0.103s)
+- **Fastest inference**: Wavelet Transform (0.005s) and PCA (0.064s)
+- **Most resource-intensive**: C-RNN (703s training) and Graph methods (365s training)
+- **Best GPU acceleration**: Deep learning methods (C-CNN, C-Transformer, C-RNN)
+- **Memory efficient**: Classical methods (PCA, Wavelet, FFT)
+
 
 ## Repository Structure
 
@@ -33,17 +56,6 @@ This repository contains code for the quantitative evaluation of different time 
 - `/utils`: Utility functions for data augmentation and visualization
 - `/notebooks`: Jupyter notebooks for experiments
 - `/src`: Implementation scripts
-
-
-### Computational Efficiency
-
-| Method | Training Time | Inference Time | Memory | GPU Benefit |
-|--------|---------------|----------------|---------|-------------|
-| PCA | 0.443s | 0.064s | Low | Low |
-| Wavelet | 0.010s | 0.005s | Low | Moderate |
-| FFT | 0.103s | 0.090s | Low | High |
-| C-Transformer | 579.6s | 0.157s | High | Very High |
-| C-CNN | 680.5s | 0.139s | High | Very High |
 
 
 
