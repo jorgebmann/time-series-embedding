@@ -1,9 +1,29 @@
 # A Comprehensive Evaluation of Time Series Embedding Methods for Classification Tasks
 
+[![Python 3.12](https://img.shields.io/badge/python-3.12+-blue.svg)](https://www.python.org/downloads/release/python-312/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![arXiv](https://img.shields.io/badge/arXiv-2501.13392-b31b1b.svg)](https://arxiv.org/abs/2501.13392)
+
+
 This repository implements various time series embedding methods and provides a framework for quantitative evaluation of these methods on classification tasks. It allows researchers to compare different embedding techniques based on their theoretical foundations and empirical performance.
 
 ## Description
 This repository contains code for the quantitative evaluation of different time series embedding methods based on their theoretical foundations and application contexts. Unlike previous work, this study quantitatively compares these methods by testing their performance on various classification tasks across different datasets. The results reveal that embedding methods perform differently depending on the dataset and classification algorithm, emphasizing the need for careful model selection and experimentation. 
+
+
+## Key Findings
+
+**🏆 Top Performing Methods:**
+- **C-Transformer**: Best overall performance with average rank 1.6
+- **FFT**: Strong classical method with average rank 2.7
+- **Wavelet Transform**: Excellent for bioelectrical signals with average rank 3.1
+- **PCA**: Robust baseline with average rank 3.5
+
+**📊 Performance Summary:**
+- C-Transformer achieves best performance on 7 out of 10 datasets
+- Classical methods (FFT, Wavelet, PCA) remain highly competitive
+- Domain-specific patterns: Wavelet excels for biomechanical signals (77.7% accuracy)
+- Computational efficiency: Classical methods offer excellent performance-to-cost ratios
 
 
 ## Repository Structure
@@ -12,7 +32,19 @@ This repository contains code for the quantitative evaluation of different time 
 - `/results`: Results from experiments
 - `/utils`: Utility functions for data augmentation and visualization
 - `/notebooks`: Jupyter notebooks for experiments
-- `/scripts`: Implementation scripts
+- `/src`: Implementation scripts
+
+
+### Computational Efficiency
+
+| Method | Training Time | Inference Time | Memory | GPU Benefit |
+|--------|---------------|----------------|---------|-------------|
+| PCA | 0.443s | 0.064s | Low | Low |
+| Wavelet | 0.010s | 0.005s | Low | Moderate |
+| FFT | 0.103s | 0.090s | Low | High |
+| C-Transformer | 579.6s | 0.157s | High | Very High |
+| C-CNN | 680.5s | 0.139s | High | Very High |
+
 
 
 ## Dependencies
@@ -123,12 +155,6 @@ The framework is designed to work with multiple time series datasets, including:
 - Environmental monitoring time series
 
 
-## Examples
-The repository includes two example notebooks:
-
-- ts_embed_example1.ipynb: Demonstrates basic time series embedding techniques
-- ts_embed_example2.ipynb: Shows more advanced embedding methods and their evaluation
-
 
 ## Environment Testing
 
@@ -146,3 +172,18 @@ This script will:
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+<!-- CITATION -->
+## Citation
+
+```bibtex
+@misc{irani2025timeseriesembeddingmethods,
+      title={Time Series Embedding Methods for Classification Tasks: A Review}, 
+      author={Habib Irani and Yasamin Ghahremani and Arshia Kermani and Vangelis Metsis},
+      year={2025},
+      eprint={2501.13392},
+      archivePrefix={arXiv},
+      primaryClass={cs.LG},
+      url={https://arxiv.org/abs/2501.13392}, 
+}
+```
